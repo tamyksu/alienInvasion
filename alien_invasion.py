@@ -79,6 +79,7 @@ class AlienInvasion:
             self.ship.moving_left = False
 
     def _update_aliens(self):
+        self._check_fleet_edge()
         self.aliens.update()
 
     def _update_bullets(self):
@@ -98,9 +99,18 @@ class AlienInvasion:
                 alien = Alien(self,70+ item * 200, 100+row*100)
                 self.aliens.add(alien)
 
+    def _check_fleet_edge(self):
+        """is any aliens reach to edge"""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
 
-
-
+    def _change_fleet_direction(self):
+        """Change the direction"""
+        for alien in self.aliens.sprites():
+           alien.rect.y += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= -1
 
     def _update_screen(self):
         """update images on the screen"""
